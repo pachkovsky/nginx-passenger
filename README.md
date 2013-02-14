@@ -1,6 +1,6 @@
 ## Overview
 
-Nginx with [Phusion Passenger](https://www.phusionpassenger.com/) module [Juju Charm](http://jujucharms.com/). Provides a container for subordinate Rack Charm.
+Nginx with [Phusion Passenger](https://www.phusionpassenger.com/) module [Juju Charm](http://jujucharms.com/). Provides a container for subordinate [Rack Charm](https://code.launchpad.net/~pavel-pachkovskij/charms/precise/rack/trunk).
 
 ## Usage
 
@@ -8,7 +8,7 @@ Nginx with [Phusion Passenger](https://www.phusionpassenger.com/) module [Juju C
 
         juju deploy nginx-passenger
 
-2. Deploy Rack application and all dependent services ([see how](http://example.com)).
+2. Deploy Rack application and all dependent services ([see how](https://code.launchpad.net/~pavel-pachkovskij/charms/precise/rack/trunk)).
 
         juju deploy rack --config myapp.yml
 
