@@ -1,0 +1,64 @@
+#!/bin/bash
+
+set -eu
+source "$(dirname $0)/common.sh"
+
+juju-log 'Install dependencies'
+apt-get install -y -qq build-essential python-software-properties libcurl4-openssl-dev libssl-dev zlib1g-dev
+
+juju-log 'Add Brightbox ppa'
+apt-add-repository -y ppa:brightbox/ruby-ng
+apt-get -qq update
+
+juju-log 'Install Ruby'
+apt-get install -y -qq ruby1.9.3
+
+juju-log 'Install Phusion Passenger'
+gem install passenger --no-rdoc --no-ri
+
+juju-log 'Run passenger-install-nginx-module'
+passenger-install-nginx-module --auto --auto-download --prefix=/opt/nginx
+
+juju-log "Configure Nginx"
+cat > "/opt/nginx/conf/nginx.conf" <<EOS
+#user  nobody;
+worker_processes  1;
+
+pid        /var/run/nginx.pid;
+
+
+events {
+    worker_connections  1024;
+}
+
+
+http {
+    passenger_root `passenger-config --root`;
+    passenger_ruby `which ruby`;
+
+    include       mime.types;
+    default_type  application/octet-stream;
+
+    sendfile        on;
+    keepalive_timeout  65;
+
+    include $default_conf;
+}
+EOS
+
+juju-log 'Configure nginx server'
+cat > $default_conf <<EOS
+server {
+    server_name localhost;
+    listen 80;
+    root $default_root/public;
+    passenger_enabled on;
+}
+EOS
+
+juju-log 'Copy init.d script'
+cp "$(dirname $0)/../files/nginx" /etc/init.d/nginx
+chmod +x /etc/init.d/nginx
+
+juju-log "Open port: [80]"
+open-port 80

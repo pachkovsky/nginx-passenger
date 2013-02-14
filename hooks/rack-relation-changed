@@ -1,0 +1,12 @@
+#!/bin/bash
+
+set -eu
+source "$(dirname $0)/common.sh"
+
+rack_root=`relation-get rack_root`
+
+exit_if_blank $rack_root "Rack root"
+
+ln -f -s $rack_root $default_root
+
+touch $default_root/tmp/restart.txt
