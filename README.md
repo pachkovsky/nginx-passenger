@@ -49,8 +49,9 @@ It's possible to use this service with load balancer. Here is an example
 ## Under the hood
 
 This Charm
-- installs Ruby 1.9.3 from [Brightbox Launchpad package repository](https://launchpad.net/~brightbox/+archive/ruby-ng).
+- installs Nginx, Phusion Passenger and Ruby from  from [Brightbox Launchpad package repository](https://launchpad.net/~brightbox/+archive/ruby-ng).
 - installs all dependencies
-- installs Phusion Passenger
-- installs Nginx with passenger-install-nginx-module tool
 - configures Nginx to run Rack application
+
+## TODO
+- Add Python (WSGI) apps support.
